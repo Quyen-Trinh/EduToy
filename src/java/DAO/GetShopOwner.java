@@ -42,7 +42,7 @@ public class GetShopOwner {
                     String name = rs.getString("Name");
                     String citizenCode = rs.getString("Citizen_code");
                     String wareHouse = rs.getString("Warehouse");
-                    String type = rs.getString("Type");
+                    int type = rs.getInt("Type");
                     
                     ShopOwner SO = new ShopOwner(uid, soid, avatar, name, citizenCode, wareHouse, type);
                     shopList.add(SO);
@@ -94,7 +94,7 @@ public class GetShopOwner {
                 shopOwner.setName(rs.getString("Name"));
                 shopOwner.setCitizenCode(rs.getString("Citizen_code"));
                 shopOwner.setWareHouse(rs.getString("Warehouse"));
-                shopOwner.setType(rs.getString("Type"));
+                shopOwner.setType(rs.getInt("Type"));
                 shopOwners.add(shopOwner); // Thêm cửa hàng vào danh sách
             }
         }

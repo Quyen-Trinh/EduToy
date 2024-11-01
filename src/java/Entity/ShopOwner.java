@@ -16,12 +16,12 @@ public class ShopOwner {
     private String name;
     private String citizenCode;
     private String wareHouse;
-    private String type;
+    private int type;
 
     public ShopOwner() {
     }
 
-    public ShopOwner(int uid, int soid, String avatar, String name, String citizenCode, String wareHouse, String type) {
+    public ShopOwner(int uid, int soid, String avatar, String name, String citizenCode, String wareHouse, int type) {
         this.uid = uid;
         this.soid = soid;
         this.avatar = avatar;
@@ -79,12 +79,14 @@ public class ShopOwner {
         this.wareHouse = wareHouse;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
+
+   
   
 }

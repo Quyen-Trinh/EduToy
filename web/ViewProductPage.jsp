@@ -332,7 +332,7 @@
                                         <button type="button" class="quantity-btn" onclick="decreaseQuantity()">-</button>
                                         <input type="text" id="quantity" value="1" name="txtQuantity" readonly>
                                         <button type="button" class="quantity-btn" onclick="increaseQuantity()">+</button>
-                                    </div>
+                                </div>
                                     <input type="hidden" value="${productDetail.price}" name="txtPrice">
                                 <input type="hidden" value="${productDetail.pid}" name="txtPID"/>
                                 <input type="hidden" name="selectedDuration" value="0">  
