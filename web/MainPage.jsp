@@ -65,8 +65,6 @@
                 height: 360px;
             }
             
-            
-            
             /* Bố cục chính của các sản phẩm */
             .Show_product {
                 display: grid;
@@ -168,9 +166,23 @@
         </style>
         
     </head>
-    <body>
-        
+    <body> 
         <%@include file="UserNavigation.jsp" %>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <div class="Advertising">
             <c:if test="${not empty listNgonNgu}">
                 <div class="background_first">
@@ -188,7 +200,6 @@
                     </div>
 
                     <div class="Show_product">
-
                         <c:forEach var="procuct1" items="${listNgonNgu}">
                             <div class="product-box">
                                 <a href="MainController?txtPID=${procuct1.pid}&action=viewProduct">

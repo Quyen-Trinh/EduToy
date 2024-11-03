@@ -5,11 +5,16 @@
  */
 package Controller;
 
+import DAO.GetProductDAO;
 import DAO.GetShopOwner;
 import DAO.OrderDAO;
+import DAO.PaymentDAO;
+import Entity.Cart;
 import Entity.OrderDetail;
+import Entity.PaymentDetail;
 import Entity.Product;
 import Entity.ShopOwner;
+import Entity.User;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +23,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,7 +45,13 @@ public class GetOrderDetail extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
-
+              HttpSession ss = request.getSession();
+            User user = (User) ss.getAttribute("UserAccount");
+            if (user == null) {
+                request.getRequestDispatcher("LoginPage.jsp").forward(request, response);
+            }
+            
+            ;
             String txtcontent = request.getParameter("txtcontent");
             int status = 0;
 
@@ -50,20 +62,35 @@ public class GetOrderDetail extends HttpServlet {
                     status = 0; 
                 }
             }
-
+           
             OrderDAO od = new OrderDAO();
-            List<OrderDetail> orderList = od.GetOrderByStatus(status);
+            PaymentDAO pd = new PaymentDAO();
+                     
+            List<OrderDetail> orderList = od.GetOrderByStatus(user.getUid(),status);
+            
+            List<PaymentDetail> pdetail = new ArrayList<>();
+            for (OrderDetail odd : orderList) {
+                pdetail.add(pd.getPDetail(odd.getOdid()));
+            }
             
             
             List<Integer> shopIds = new ArrayList<>();
             for (OrderDetail orderDetail : orderList) {
                 shopIds.add(orderDetail.getSoid());
             }
-
             GetShopOwner shopOwnerDAO = new GetShopOwner();
             List<ShopOwner> shopOwners = shopOwnerDAO.getShopsByIds(shopIds);
             
             
+            List<Integer> productIds = new ArrayList<>();
+            for (OrderDetail orderDetail : orderList) {
+                productIds.add(orderDetail.getPid());
+            }            
+            GetProductDAO productDAO = new GetProductDAO();
+            List<Product> product = productDAO.getProductsByIds(productIds);
+            
+            request.setAttribute("product", product);
+            request.setAttribute("pdetail", pdetail);
             request.setAttribute("shop", shopOwners);
             request.setAttribute("orderList", orderList);
             request.getRequestDispatcher("MainOrderPage.jsp").forward(request, response);

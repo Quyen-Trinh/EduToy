@@ -5,6 +5,8 @@
  */
 package Entity;
 
+import java.sql.Date;
+
 /**
  *
  * @author Quyền
@@ -18,12 +20,12 @@ public class OrderDetail {
     private int rentTime;
     private String dateStart;
     private String dateEnd;
-    private String Status;
+    private int status;
 
     public OrderDetail() {
     }
 
-    public OrderDetail(int odid, int oid, int soid, int pid, int quantity, int rentTime, String dateStart, String dateEnd, String Status) {
+    public OrderDetail(int odid, int oid, int soid, int pid, int quantity, int rentTime, String dateStart, String dateEnd, int status) {
         this.odid = odid;
         this.oid = oid;
         this.soid = soid;
@@ -32,8 +34,10 @@ public class OrderDetail {
         this.rentTime = rentTime;
         this.dateStart = dateStart;
         this.dateEnd = dateEnd;
-        this.Status = Status;
+        this.status = status;
     }
+
+
 
     public int getOdid() {
         return odid;
@@ -99,13 +103,17 @@ public class OrderDetail {
         this.dateEnd = dateEnd;
     }
 
-    public String getStatus() {
-        return Status;
+
+
+    public int getStatus() {
+        return status;
     }
 
-    public void setStatus(String Status) {
-        this.Status = Status;
+    public void setStatus(int status) {
+        this.status = status;
     }
+
+
     
     
 }

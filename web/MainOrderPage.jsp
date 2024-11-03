@@ -4,6 +4,8 @@
     Author     : Quyền
 --%>
 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -120,45 +122,75 @@
         
     </head>
     <body>
+       
         <%@include  file="UserNavigation.jsp" %>
-        
-        <%--trạng thái đơn hàng xử lý txtcontent . xử lý MainController: action=InformationOrder --%>
+         <%--trạng thái đơn hàng xử lý txtcontent . xử lý MainController: action=InformationOrder --%>
         <div class="content_order">
-            <a class="active" href="MainController?filter=all&action=InformationOrder&txtcontent=Tất cả">Tất cả</a>
-            <a href="MainController?filter=pending&action=InformationOrder&txtcontent=Chờ Vận Chuyển">Chờ vận chuyển</a>
-            <a href="MainController?filter=shipping&action=InformationOrder&txtcontent=Đang vận Chuyển">Đang vận chuyển</a>
-            <a href="MainController?filter=rented&action=InformationOrder&txtcontent=Đang thuê">Đang thuê</a>
-            <a href="MainController?filter=review&action=InformationOrder&txtcontent=Cần đánh giá">Cần đánh giá</a>
-            <a href="MainController?filter=return&action=InformationOrder&txtcontent=Trả hàng">Trả hàng</a>
-            <a href="MainController?filter=canceled&action=InformationOrder&txtcontent=Hủy đơn">Hủy đơn</a>
-            <a href="MainController?filter=history&action=InformationOrder&txtcontent=Lịch Sử">Lịch sử</a>
+            <a class="active" href="MainController?filter=all&action=InformationOrder&txtcontent=0">Tất cả</a>
+            <a href="MainController?filter=pending&action=InformationOrder&txtcontent=1">Chờ vận chuyển</a>
+            <a href="MainController?filter=shipping&action=InformationOrder&txtcontent=2">Đang vận chuyển</a>
+            <a href="MainController?filter=rented&action=InformationOrder&txtcontent=3">Đang thuê</a>
+            <a href="MainController?filter=review&action=InformationOrder&txtcontent=4">Cần đánh giá</a>
+            <a href="MainController?filter=return&action=InformationOrder&txtcontent=5">Trả hàng</a>
+            <a href="MainController?filter=canceled&action=InformationOrder&txtcontent=6">Hủy đơn</a>
+            <a href="MainController?filter=history&action=InformationOrder&txtcontent=7">Lịch sử</a>
         </div>
         
-        <div class="background_coler_Product">
-            <div class="backgrount_product">
-                <div class="Shop_Order_product">
-                    <img src="https://thebookland.vn/images/1689223695931_BrainBolt%20Genius%20(2).jpg"/>
-                    <a>Máy chơi luyện trí nhớ và giải đố: BrainBolt® Máy chơi luyện trí nhớ và giải đố: BrainBolt® Máy chơi luyện trí nhớ và giải đố: BrainBolt®</a>
-                    <p>Giao thành công</p>
-                </div>
-                <div class="line_order"></div>
-                <div class="product_order">
-                    <img src="https://thebookland.vn/images/1689223695931_BrainBolt%20Genius%20(2).jpg" />
-                    <div class="content_product_order">
-                        <a>Máy chơi luyện trí nhớ và giải đố: BrainBolt® Máy chơi luyện trí nhớ và giải đố: BrainBolt® Máy chơi luyện trí</a>
-                        <div class="order_PriceAndQuantity">
-                            <a>1.000.000</a>
-                            <a>Số lượng: x1</a>
-                        </div>                       
-                    </div>
-                </div>
-            </div>
-        </div>  
-        
-        
-        
-        
-        
+        <c:choose>
+            <c:when test="${not empty orderList}">
+                <c:forEach var="order" items="${orderList}">
+                    <c:forEach var="product" items="${product}">
+                        <c:forEach var="pdetail" items="${pdetail}">
+                            <c:if test="${order.odid == pdetail.odid}">
+                                <c:forEach var="shop" items="${shop}">
+                                    <c:if test="${shop.soid == order.soid}">
+                                        <div class="background_coler_Product">
+                                            <div class="backgrount_product">
+                                                <div class="Shop_Order_product">
+                                                    <img src="${shop.avatar}"/>
+                                                    <a>${shop.name}</a>
+                                                    <p>
+                                                        <c:choose>
+                                                            <c:when test="${order.status == 1}">Chờ vận chuyển</c:when>
+                                                            <c:when test="${order.status == 2}">Đang vận chuyển</c:when>
+                                                            <c:when test="${order.status == 3}">Đang Thuê</c:when>
+                                                            <c:when test="${order.status == 4 || order.status == 7}">Giao thành công</c:when>
+                                                            <c:when test="${order.status == 5}">Đang trả hàng</c:when>
+                                                            <c:when test="${order.status == 6}">Hủy đơn</c:when>
+                                                        </c:choose>
+                                                    </p>
+                                                </div>
+                                                <div class="line_order"></div>
+                                                <div class="product_order">
+                                                    <img src="${product.image}" />
+                                                    <div class="content_product_order">
+                                                        <a>${product.name}</a>
+                                                        <div class="order_PriceAndQuantity">
+                                                            <a><fmt:formatNumber value="${pdetail.price}" pattern="#,###"></fmt:formatNumber> đ</a>
+                                                            <a>${order.quantity}</a>
+                                                            <c:if test="${order.rentTime > 0}">
+                                                                <a>${order.rentTime}</a>
+                                                            </c:if>
+                                                        </div>                       
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </c:if>                                   
+                                </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </c:forEach>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <a>trống</a>
+            </c:otherwise>
+        </c:choose>
+
+
+
         <script src="JS/ButtonAuto.js"></script>
+       
     </body>
 </html>
