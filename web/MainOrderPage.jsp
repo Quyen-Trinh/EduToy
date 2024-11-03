@@ -28,6 +28,7 @@
                 width: 99%;
                 position: fixed;
                 overflow: auto;
+                z-index: 500;
             }
             .content_order a{
                 margin-left: 100px;
@@ -47,9 +48,9 @@
             .background_coler_Product{
                 background-color: white;
                 width: 80%;
-                height: 100%;
+                height: auto;
                 margin-left: 220px;
-                position: fixed;
+                padding-bottom: 20px;
                 z-index: -100;
                 padding-top: 190px;
             }
@@ -58,6 +59,7 @@
                 width: 80%;
                 height: auto;
                 margin-left: 130px;
+                margin-bottom: 20px;
             }
             .Shop_Order_product{
                 display: flex;
@@ -136,57 +138,72 @@
             <a href="MainController?filter=history&action=InformationOrder&txtcontent=7">Lịch sử</a>
         </div>
         
-        <c:choose>
-            <c:when test="${not empty orderList}">
-                <c:forEach var="order" items="${orderList}">
-                    <c:forEach var="product" items="${product}">
-                        <c:forEach var="pdetail" items="${pdetail}">
-                            <c:if test="${order.odid == pdetail.odid}">
-                                <c:forEach var="shop" items="${shop}">
-                                    <c:if test="${shop.soid == order.soid}">
-                                        <div class="background_coler_Product">
-                                            <div class="backgrount_product">
-                                                <div class="Shop_Order_product">
-                                                    <img src="${shop.avatar}"/>
-                                                    <a>${shop.name}</a>
-                                                    <p>
-                                                        <c:choose>
-                                                            <c:when test="${order.status == 1}">Chờ vận chuyển</c:when>
-                                                            <c:when test="${order.status == 2}">Đang vận chuyển</c:when>
-                                                            <c:when test="${order.status == 3}">Đang Thuê</c:when>
-                                                            <c:when test="${order.status == 4 || order.status == 7}">Giao thành công</c:when>
-                                                            <c:when test="${order.status == 5}">Đang trả hàng</c:when>
-                                                            <c:when test="${order.status == 6}">Hủy đơn</c:when>
-                                                        </c:choose>
-                                                    </p>
-                                                </div>
-                                                <div class="line_order"></div>
-                                                <div class="product_order">
-                                                    <img src="${product.image}" />
-                                                    <div class="content_product_order">
-                                                        <a>${product.name}</a>
-                                                        <div class="order_PriceAndQuantity">
-                                                            <a><fmt:formatNumber value="${pdetail.price}" pattern="#,###"></fmt:formatNumber> đ</a>
-                                                            <a>${order.quantity}</a>
-                                                            <c:if test="${order.rentTime > 0}">
-                                                                <a>${order.rentTime}</a>
-                                                            </c:if>
-                                                        </div>                       
-                                                    </div>
-                                                </div>
-                                            </div>  
-                                        </div>
-                                    </c:if>                                   
-                                </c:forEach>
-                            </c:if>
-                        </c:forEach>
-                    </c:forEach>
-                </c:forEach>
-            </c:when>
-            <c:otherwise>
-                <a>trống</a>
-            </c:otherwise>
-        </c:choose>
+         <c:choose>
+             <c:when test="${ not empty orderDetail }">
+                <div class="background_coler_Product">
+                     <c:forEach var="od" items="${orderDetail}">
+                         <c:forEach var="pd" items="${pdetail}">
+                             <c:if test="${od.odid == pd.odid}">
+                                 <c:forEach var="pr" items="${product}">
+                                     <c:if test="${od.pid == pr.pid}">
+                                         <c:forEach var="so" items="${shop}">
+                                             <c:if test="${so.soid == od.soid}">
+                                                 <div class="backgrount_product">
+                                                     <div class="Shop_Order_product">
+
+                                                         <img src="${so.avatar}" />
+                                                         <a>${so.name}</a>
+                                                         <p>
+                                                            <c:choose>
+                                                                <c:when test="${od.status == 1}">Chờ vận chuyển</c:when>
+                                                                <c:when test="${od.status == 2}">Đang vận chuyển</c:when>
+                                                                <c:when test="${od.status == 3}">Đang Thuê</c:when>
+                                                                <c:when test="${od.status == 4 || od.status == 7}">Giao thành công</c:when>
+                                                                <c:when test="${od.status == 5}">Đang trả hàng</c:when>
+                                                                <c:when test="${od.status == 6}">Hủy đơn</c:when>
+                                                            </c:choose>
+                                                     </p>
+                                                     </div>
+                                                     <div class="line_order"></div>
+                                                     <div class="product_order">
+                                                         <img src="${pr.image}" />
+                                                         <div class="content_product_order">
+                                                             <a>${pr.name}</a>
+                                                             <div class="order_PriceAndQuantity">
+                                                                <a>Giá: <fmt:formatNumber value="${pd.price}" pattern="#,###" /> đ</a>
+                                                                <a>Số lượng: ${od.quantity}</a>
+                                                                <c:choose>
+                                                                    <c:when test="${od.rentTime == 7}">
+                                                                        <a>Thời gian thuê: 1 tuần</a>
+                                                                    </c:when>
+                                                                    <c:when test="${od.rentTime == 14}">
+                                                                        <a>Thời gian thuê: 2 tuần</a>
+                                                                    </c:when>
+                                                                    <c:when test="${od.rentTime == 30}">
+                                                                        <a>Thời gian thuê: 1 tháng</a>
+                                                                    </c:when>
+                                                                </c:choose>
+                                                             </div>                       
+                                                         </div>
+                                                     </div>
+                                                 </div> 
+                                             </c:if>                                   
+                                         </c:forEach>
+                                     </c:if>
+                                 </c:forEach>
+                             </c:if>
+                         </c:forEach>
+                     </c:forEach>
+
+                 </div>
+
+             </c:when>
+             <c:otherwise>
+                 <a style="margin-top: 500px; z-index: 100;">trống</a>
+             </c:otherwise>
+         </c:choose>
+
+
 
 
 

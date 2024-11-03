@@ -5,8 +5,6 @@
  */
 package Entity;
 
-import java.sql.Date;
-
 /**
  *
  * @author Quyền

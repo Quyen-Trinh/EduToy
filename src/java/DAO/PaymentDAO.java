@@ -14,7 +14,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -121,7 +120,6 @@ public class PaymentDAO {
             if (rs.next()) {                
                 int pdid = rs.getInt("PDID");
                 int paid = rs.getInt("PAID");
-                int did = rs.getInt("ODID");
                 float price = rs.getFloat("Price");
                 float deposit = rs.getFloat("Deposit");
                 float refShop = rs.getFloat("Refund_Shop");
@@ -130,11 +128,12 @@ public class PaymentDAO {
                 String date = rs.getString("Date");
                 String status = rs.getString("Status");
                 
-                PaymentDetail pd = new PaymentDetail(pdid, paid, did, price, price, deposit, refShop, refCus, flatformFee, date, status);
+                PaymentDetail pd = new PaymentDetail(pdid, paid, odid, price, deposit, refShop, refCus, flatformFee, date, status);
                 return pd;
             }
         } catch (Exception e) {
         }
         return null;
     }
+    
 }
